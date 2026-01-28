@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('cargos', function (Blueprint $table) {
             $table->id();
-
             $table->string('nombre');
             $table->string('tipo_sala')->default('Profesor');
             $table->boolean('activo')->default(true);

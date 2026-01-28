@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nombres');
             $table->string('apellidos');
-            $table->foreignId('cargos_id')->constrained();
-            $table->foreignId('salas_id')->constrained();
-            $table->integer('estado')->default(1);
+            $table->foreignId('cargo_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sala_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }

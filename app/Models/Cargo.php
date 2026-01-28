@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cargo extends Model
 {
     //
-     use HasFactory;
+    use HasFactory;
 
     protected $fillable = [
         'nombre',
@@ -16,4 +16,8 @@ class Cargo extends Model
         'estado'
     ];
 
+    public function Personal()
+    {
+        return $this->belongsTo(Personal::class);
+    }
 }

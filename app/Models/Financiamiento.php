@@ -15,4 +15,7 @@ class Financiamiento extends Model
         'monto',
         'activo'
     ];
+
+ 
+
 }
