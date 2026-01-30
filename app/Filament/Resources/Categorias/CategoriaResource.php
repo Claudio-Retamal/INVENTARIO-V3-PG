@@ -15,6 +15,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
+
 
 class CategoriaResource extends Resource
 {
@@ -23,6 +25,11 @@ class CategoriaResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'Categoria';
+        protected static string | UnitEnum | null $navigationGroup = 'Gestion equipos';
+        protected static ?int $navigationSort = 2;
+
+
+
 
     public static function form(Schema $schema): Schema
     {

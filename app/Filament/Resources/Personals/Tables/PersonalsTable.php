@@ -19,12 +19,25 @@ class PersonalsTable
                     ->searchable(),
                 TextColumn::make('apellidos')
                     ->searchable(),
-                TextColumn::make('cargos_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('salas_id')
-                    ->numeric()
-                    ->sortable(),
+
+
+
+                TextColumn::make('sala.nombre')
+                    ->label('Sala')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('cargo.nombre')
+                    ->label('Cargo')
+                    ->sortable()
+                    ->searchable(),
+
+
+
+
+
+
+
                 TextColumn::make('estado')
                     ->numeric()
                     ->sortable(),

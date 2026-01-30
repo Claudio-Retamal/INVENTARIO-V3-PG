@@ -20,7 +20,7 @@ class PersonalForm
         return $schema
 
             ->components([
-                Section::make('Personal')
+                Section::make('Personals')
                     ->schema([
                         TextInput::make('nombres')
                             ->required(),
@@ -31,20 +31,12 @@ class PersonalForm
                 Section::make('Asignación')
                     ->schema([
                         Select::make('sala_id')->relationship(name: 'sala', titleAttribute: 'nombre')
-
-                            ->required()
                             ->searchable()
-                            ->preload()
-                            ->live()
-                            ->required(),
-
-
+                            ->preload(),
+                            
                              Select::make('cargo_id')->relationship(name: 'cargo', titleAttribute: 'nombre')
-
-                            ->required()
                             ->searchable()
                             ->preload()
-                            ->live()
                             ->required(),
                         
                         Toggle::make('activo')

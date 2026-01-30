@@ -6,17 +6,15 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+   
     public function up(): void
     {
         Schema::create('personals', function (Blueprint $table) {
             $table->id();
             $table->string('nombres');
             $table->string('apellidos');
-            $table->foreignId('cargo_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('sala_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('cargo_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sala_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->boolean('estado')->default(true);
             $table->timestamps();
         });
