@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Personals\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Schemas\Schema;
 
@@ -13,8 +14,21 @@ class PersonalInfolist
             ->components([
                 TextEntry::make('nombres'),
                 TextEntry::make('apellidos'),
-                TextEntry::make('cargos_id')
-                    ->numeric(),
+
+                Select::make('sala_id')->relationship(name: 'sala', titleAttribute: 'nombre')
+                    ->searchable()
+                    ->preload(),
+
+                Select::make('cargo_id')->relationship(name: 'cargo', titleAttribute: 'nombre')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+
+                Select::make('cargo_id')->relationship(name: 'cargo', titleAttribute: 'nombre')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+
                 TextEntry::make('salas_id')
                     ->numeric(),
                 TextEntry::make('estado')
