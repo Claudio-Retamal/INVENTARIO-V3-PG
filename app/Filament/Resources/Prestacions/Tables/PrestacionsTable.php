@@ -1,38 +1,39 @@
 <?php
 
-namespace App\Filament\Resources\Personals\Tables;
+namespace App\Filament\Resources\Prestacions\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class PersonalsTable
+class PrestacionsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('nombres')
+                TextColumn::make('nombre')
                     ->searchable(),
-                TextColumn::make('apellidos')
+                TextColumn::make('motivo')
                     ->searchable(),
-
-                TextColumn::make('sala.nombre')
-                    ->label('Sala')
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('cargo.nombre')
-                    ->label('Cargo')
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('estado')
+                TextColumn::make('fecha_prestacion')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('fecha_devolucion')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('personal.nombres')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('equipo.nombre')
+                    ->numeric()
+                    ->sortable(),
+                IconColumn::make('estado')
+                    ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

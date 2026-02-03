@@ -28,13 +28,13 @@ class EquiposTable
                     ->searchable(),
                 TextColumn::make('descripcion')
                     ->searchable(),
-                TextColumn::make('categoria_id')
+                TextColumn::make('categoria.nombre')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('sala_id')
+                TextColumn::make('sala.nombre')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('personal_id')
+                TextColumn::make('personal.nombres')
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('estado')
