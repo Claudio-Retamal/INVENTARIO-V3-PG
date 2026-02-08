@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Prestacions\Schemas;
 
+use DateTime;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -34,13 +35,13 @@ class PrestacionForm
                 Section::make('Personal')->schema([
 
 
-                    DatePicker::make('fecha_prestacion')
+                    DateTimePicker::make('fecha_prestacion')
                         ->native(false)
-                        ->displayFormat('d/m/Y'),
+                        ->displayFormat('dd/mm/YYYY'),
 
-                             DatePicker::make('fecha_devolucion')
+                    DateTimePicker::make('fecha_devolucion')
                         ->native(false)
-                        ->displayFormat('d/m/Y'),
+                        ->displayFormat('dd/mm/YYYY'),
 
                     Select::make('equipo_id')->relationship(name: 'equipo', titleAttribute: 'nombre')
                         ->searchable()

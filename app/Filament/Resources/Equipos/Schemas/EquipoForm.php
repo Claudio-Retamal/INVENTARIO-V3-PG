@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources\Equipos\Schemas;
 
+use App\Models\Equipo;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Actions\Action;
 use Filament\Schemas\Schema;
 
 class EquipoForm
@@ -49,8 +51,8 @@ class EquipoForm
                     Toggle::make('estado')
                         ->required(),
 
-                ])
-
+                ]),
+           
             ]);
     }
 }

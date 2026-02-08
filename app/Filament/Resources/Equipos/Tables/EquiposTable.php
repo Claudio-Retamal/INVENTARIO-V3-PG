@@ -2,13 +2,25 @@
 
 namespace App\Filament\Resources\Equipos\Tables;
 
+use App\Filament\Imports\EquipoImporter;
+use App\Models\Personal;
+use App\Models\Prestacion;
+use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ImportAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Nette\Schema\ValidationException;
 
 class EquiposTable
 {
@@ -37,8 +49,12 @@ class EquiposTable
                 TextColumn::make('personal.nombres')
                     ->numeric()
                     ->sortable(),
-                IconColumn::make('estado')
-                    ->boolean(),
+                ToggleColumn::make('estado')
+                    ->label('Prestado')
+                    ->onColor('danger')
+                    ->offColor('success')
+                    ->onIcon('heroicon-o-lock-closed')
+                    ->offIcon('heroicon-o-lock-open'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -52,13 +68,104 @@ class EquiposTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
-                EditAction::make(),
+                Action::make('prestar')
+                    ->label('Prestar')
+                    ->icon('heroicon-o-clipboard-document-check')
+                    ->color('success')
+                    ->visible(fn($record) => $record->estado == false)
+                    ->modalHeading('Prestación de equipo')
+                    ->form([
+
+                        TextInput::make('nombre')
+                            ->label('Nombre de la prestación')
+                            ->required()
+                            ->maxLength(255),
+
+                        TextInput::make('motivo')
+                            ->label('Motivo')
+                            ->required()
+                            ->maxLength(255),
+
+                            
+                        Select::make('personal_id')
+                            ->label('Personal')
+                            ->relationship('personal', 'nombres')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+
+                        DatePicker::make('fecha_prestacion')
+                            ->label('Fecha de préstamo')
+                            ->default(now())
+                            ->required(),
+
+                        DatePicker::make('fecha_devolucion')
+                            ->label('Fecha de devolución')
+                            ->required()
+                            ->after('fecha_prestacion'),
+
+                        Textarea::make('observacion')
+                            ->label('Observaciones')
+                            ->rows(3),
+                    ])
+                    ->action(function (array $data, $record) {
+
+                        // 1️⃣ Validar si el equipo ya tiene préstamo en ese rango de fechas
+                        $existePrestamo = Prestacion::where('equipo_id', $record->id)
+                            ->where('estado', true) // solo activos
+                            ->where('fecha_prestacion', '<=', $data['fecha_devolucion'])
+                            ->where('fecha_devolucion', '>=', $data['fecha_prestacion'])
+                            ->exists();
+
+                        if ($existePrestamo) {
+                            Notification::make()
+                                ->title('Fecha no disponible')
+                                ->body('Este equipo ya está reservado en el rango de fechas seleccionado.')
+                                ->danger()
+                                ->send();
+
+                            return; // detiene la acción
+                        }
+
+                        // 2️⃣ Crear la prestación
+                        Prestacion::create([
+                            'equipo_id'       => $record->id,
+                            'personal_id'     => $data['personal_id'],
+                            'nombre'     => $data['nombre'],
+                            'motivo'     => $data['motivo'],
+                            'fecha_prestacion' => $data['fecha_prestacion'],
+                            'fecha_devolucion' => $data['fecha_devolucion'],
+                            'observacion'   => $data['observacion'] ?? null,
+                            'estado'          => true, // activo
+                        ]);
+
+                        // 3️⃣ Marcar equipo como prestado
+                        $record->update([
+                            'estado' => true,
+                        ]);
+
+                        // 4️⃣ Notificación de éxito
+                        Notification::make()
+                            ->title('Préstamo registrado correctamente')
+                            ->success()
+                            ->send();
+                    })
+
+
             ])
             ->toolbarActions([
+
+
+                ImportAction::make('importarEquipos')
+                    ->label('Importar equipos')
+                    ->icon('heroicon-o-arrow-up-tray')
+                    ->color('primary')
+                    ->importer(EquipoImporter::class),
+
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+
             ]);
     }
 }
