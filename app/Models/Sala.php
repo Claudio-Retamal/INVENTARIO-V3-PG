@@ -15,7 +15,7 @@ class Sala extends Model
         'nombre',
         'tipo_sala',
         'numero_equipos',
-        'activo'
+        'active'
     ];
  
 }

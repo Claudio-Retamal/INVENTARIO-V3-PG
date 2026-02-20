@@ -31,7 +31,7 @@ class PersonalInfolist
 
                 TextEntry::make('salas_id')
                     ->numeric(),
-                TextEntry::make('estado')
+                TextEntry::make('active')
                     ->numeric(),
                 TextEntry::make('created_at')
                     ->dateTime(),

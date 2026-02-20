@@ -10,7 +10,7 @@ class Personal extends Model
 {
 
     use HasFactory;
-    protected $fillable = ['nombres', 'apellidos', 'cargo_id', 'sala_id', 'estado'];
+    protected $fillable = ['nombres', 'apellidos', 'cargo_id', 'sala_id', 'active'];
 
     //Muchos personales tienen un cargo
     /*   public function Sala()

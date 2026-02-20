@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->string('tipo_sala')->default('clases');
             $table->integer('numero_equipos');
-            $table->boolean('activo')->default(true);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

@@ -40,19 +40,23 @@ class EquipoForm
                         ->preload(),
 
                     Select::make('categoria_id')->relationship(name: 'categoria', titleAttribute: 'nombre')
+
                         ->searchable()
                         ->preload()
                         ->required(),
 
-                    Select::make('personal_id')->relationship(name: 'personal', titleAttribute: 'nombres')
+                    Select::make('personal_id')->relationship(name: 'personal', titleAttribute: 'nombres'),
+                    Select::make('financiamiento_id')->relationship(name: 'financiamiento', titleAttribute: 'nombre')
+
+
                         ->searchable()
                         ->preload()
                         ->required(),
-                    Toggle::make('estado')
+                    Toggle::make('active')
                         ->required(),
 
                 ]),
-           
+
             ]);
     }
 }

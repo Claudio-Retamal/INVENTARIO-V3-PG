@@ -32,7 +32,7 @@ class PrestacionsTable
                 TextColumn::make('equipo.nombre')
                     ->numeric()
                     ->sortable(),
-                IconColumn::make('estado')
+                IconColumn::make('active')
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()

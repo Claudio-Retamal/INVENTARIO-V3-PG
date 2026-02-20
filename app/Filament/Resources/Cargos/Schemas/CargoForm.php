@@ -17,7 +17,7 @@ class CargoForm
                 TextInput::make('tipo_sala')
                     ->required()
                     ->default('Profesor'),
-                Toggle::make('activo')
+                Toggle::make('active')
                     ->required(),
             ]);
     }

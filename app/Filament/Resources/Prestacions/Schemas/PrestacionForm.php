@@ -47,7 +47,7 @@ class PrestacionForm
                         ->searchable()
                         ->preload()
                         ->required(),
-                    Toggle::make('estado')
+                    Toggle::make('active')
                         ->required(),
 
                 ])

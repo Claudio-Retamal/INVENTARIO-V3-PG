@@ -13,9 +13,6 @@ class Financiamiento extends Model
         'nombre',
         'tipo',
         'monto',
-        'activo'
+        'active'
     ];
-
- 
-
 }

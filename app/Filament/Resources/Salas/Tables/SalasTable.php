@@ -20,7 +20,7 @@ class SalasTable
                 TextColumn::make('nombre'),
                 TextColumn::make('numero_equipos'),
                  TextColumn::make('tipo_sala'),
-                IconColumn::make('activo')->boolean(),
+                IconColumn::make('active')->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

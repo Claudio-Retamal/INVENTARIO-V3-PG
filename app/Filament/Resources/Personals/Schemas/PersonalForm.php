@@ -39,7 +39,7 @@ class PersonalForm
                             ->preload()
                             ->required(),
                         
-                        Toggle::make('activo')
+                        Toggle::make('active')
                             ->required(),
 
                     ]),

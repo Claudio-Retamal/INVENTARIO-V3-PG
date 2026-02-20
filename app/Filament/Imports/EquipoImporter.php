@@ -15,46 +15,48 @@ class EquipoImporter extends Importer
     public static function getColumns(): array
     {
         return [
+
             ImportColumn::make('nombre')
                 ->requiredMapping()
-                ->rules(['required']),
+                ->rules(['required', 'max:255']),
+
             ImportColumn::make('numero_serial')
-                ->requiredMapping()
-                ->rules(['required']),
-            ImportColumn::make('modelo')
-                ->requiredMapping()
-                ->rules(['required']),
-            ImportColumn::make('marca')
-                ->requiredMapping()
-                ->rules(['required']),
-            ImportColumn::make('color')
-                ->requiredMapping()
-                ->rules(['required']),
-            ImportColumn::make('descripcion')
-                ->requiredMapping()
-                ->rules(['required']),
+                ->rules(['nullable', 'max:255']),
+
+            ImportColumn::make('modelo'),
+
+            ImportColumn::make('marca'),
+
+            ImportColumn::make('color'),
+
+            ImportColumn::make('descripcion'),
+
             ImportColumn::make('categoria_id')
-                ->requiredMapping()
                 ->numeric()
-                ->rules(['required', 'integer']),
+                ->rules(['exists:categorias,id']),
+
             ImportColumn::make('sala_id')
-                ->requiredMapping()
                 ->numeric()
-                ->rules(['required', 'integer']),
+                ->rules(['exists:salas,id']),
+
             ImportColumn::make('personal_id')
-                ->requiredMapping()
                 ->numeric()
-                ->rules(['required', 'integer']),
-            ImportColumn::make('estado')
-                ->requiredMapping()
-                ->boolean()
-                ->rules(['required', 'boolean']),
+                ->rules(['exists:personals,id']),
+
+            ImportColumn::make('financiamiento_id')
+                ->numeric()
+                ->rules(['exists:financiamientos,id']),
+                
+            ImportColumn::make('active')
+                ->rules(['nullable', 'max:100']),
         ];
     }
 
     public function resolveRecord(): Equipo
     {
-        return new Equipo();
+        return Equipo::firstOrNew([
+            'numero_serial' => $this->data['numero_serial'],
+        ]);
     }
 
     public static function getCompletedNotificationBody(Import $import): string

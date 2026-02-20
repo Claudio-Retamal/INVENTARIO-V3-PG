@@ -26,7 +26,7 @@ class SalaForm
                         ->required()
                         ->numeric(),
 
-                    Toggle::make('activo')
+                    Toggle::make('active')
                         ->required()
 
                 ])

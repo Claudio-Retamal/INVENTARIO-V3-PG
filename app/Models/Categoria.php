@@ -13,7 +13,7 @@ class Categoria extends Model
 
     protected $fillable = [
         'nombre',
-        'activo'
+        'active'
     ];
 
     public function Personal(){

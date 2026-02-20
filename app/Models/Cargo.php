@@ -14,7 +14,7 @@ class Cargo extends Model
     protected $fillable = [
         'nombre',
         'tipo_cargo',
-        'estado'
+        'active'
     ];
     
 }

@@ -13,8 +13,6 @@ use Filament\Tables\Filters\SelectFilter;
 
 class EquiposPrestadosTable extends TableWidget
 {
-
-
     public function table(Table $table): Table
     {
         return $table
@@ -27,20 +25,20 @@ class EquiposPrestadosTable extends TableWidget
                 TextColumn::make('marca')->label('Marca'),
                 TextColumn::make('sala.nombre')->label('Sala'),            // Relación
                 TextColumn::make('personal.nombres')->label('Responsable'), // Relación
-            
-                IconColumn::make('estado')
+
+                IconColumn::make('active')
                     ->label('Prestado')
                     ->boolean()
                     ->trueIcon('heroicon-o-lock-closed')
                     ->falseIcon('heroicon-o-lock-open')
                     ->trueColor('danger')
                     ->falseColor('success')
-                    ->tooltip(fn($record) => $record->estado ? 'Prestado' : 'Disponible'),
+                    ->tooltip(fn($record) => $record->active ? 'Prestado' : 'Disponible'),
             ])
             ->filters([
                 //
-                SelectFilter::make('estado')
-                    ->label('Estado')
+                SelectFilter::make('active')
+                    ->label('active')
                     ->options([
                         1 => 'Prestado',
                         0 => 'Disponible',

@@ -21,8 +21,9 @@ return new class extends Migration
             $table->string('descripcion');
             $table->foreignId('categoria_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sala_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('financiamiento_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('personal_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->boolean('estado')->default(true);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

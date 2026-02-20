@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->enum('type', ['SEP','FAEP','CGPA','GESTION INTERNA','DONACIÓN','OTROS'])->default('DONACIÓN');
             $table->integer('monto');
-            $table->boolean('activo')->default(true);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

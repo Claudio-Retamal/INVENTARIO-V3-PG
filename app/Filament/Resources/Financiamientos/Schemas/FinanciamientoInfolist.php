@@ -16,7 +16,7 @@ class FinanciamientoInfolist
                 TextEntry::make('type'),
                 TextEntry::make('monto')
                     ->numeric(),
-                IconEntry::make('activo')
+                IconEntry::make('active')
                     ->boolean(),
                 TextEntry::make('created_at')
                     ->dateTime(),

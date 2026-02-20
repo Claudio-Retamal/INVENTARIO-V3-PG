@@ -2,25 +2,20 @@
 
 namespace App\Filament\Resources\Equipos\Tables;
 
-use App\Filament\Imports\EquipoImporter;
-use App\Models\Personal;
 use App\Models\Prestacion;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
-use Filament\Actions\ImportAction;
-use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
-use Nette\Schema\ValidationException;
+use App\Filament\Imports\EquipoImporter;
+use Filament\Actions\ImportAction;
 
 class EquiposTable
 {
@@ -46,10 +41,13 @@ class EquiposTable
                 TextColumn::make('sala.nombre')
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('financiamiento.nombre')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('personal.nombres')
                     ->numeric()
                     ->sortable(),
-                ToggleColumn::make('estado')
+                ToggleColumn::make('active')
                     ->label('Prestado')
                     ->onColor('danger')
                     ->offColor('success')
@@ -64,9 +62,7 @@ class EquiposTable
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->recordActions([
                 Action::make('prestar')
                     ->label('Prestar')
@@ -86,7 +82,7 @@ class EquiposTable
                             ->required()
                             ->maxLength(255),
 
-                            
+
                         Select::make('personal_id')
                             ->label('Personal')
                             ->relationship('personal', 'nombres')
@@ -136,12 +132,12 @@ class EquiposTable
                             'fecha_prestacion' => $data['fecha_prestacion'],
                             'fecha_devolucion' => $data['fecha_devolucion'],
                             'observacion'   => $data['observacion'] ?? null,
-                            'estado'          => true, // activo
+                            'active'          => true, // activo
                         ]);
 
                         // 3️⃣ Marcar equipo como prestado
                         $record->update([
-                            'estado' => true,
+                            'active' => true,
                         ]);
 
                         // 4️⃣ Notificación de éxito
@@ -153,19 +149,18 @@ class EquiposTable
 
 
             ])
+
+            ->headerActions([
+                ImportAction::make()
+                    ->importer(EquipoImporter::class)
+            ])
+
+
             ->toolbarActions([
-
-
-                ImportAction::make('importarEquipos')
-                    ->label('Importar equipos')
-                    ->icon('heroicon-o-arrow-up-tray')
-                    ->color('primary')
-                    ->importer(EquipoImporter::class),
 
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-
             ]);
     }
 }

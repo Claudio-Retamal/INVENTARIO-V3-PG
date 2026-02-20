@@ -9,7 +9,7 @@ class Prestacion extends Model
 {
 
     use HasFactory;
-    protected $fillable = ['nombre', 'motivo', 'fecha_prestacion', 'fecha_devolucion', 'personal_id', 'equipo_id', 'estado'];
+    protected $fillable = ['nombre', 'motivo', 'fecha_prestacion', 'fecha_devolucion', 'personal_id', 'equipo_id', 'active'];
 
     public function personal()
     {

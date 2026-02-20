@@ -29,7 +29,7 @@ class FinanciamientoForm
                     TextInput::make('monto')
                         ->required()
                         ->numeric(),
-                    Toggle::make('activo')
+                    Toggle::make('active')
                         ->required()
 
                 ])

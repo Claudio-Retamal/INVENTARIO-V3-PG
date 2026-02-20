@@ -19,7 +19,7 @@ return new class extends Migration
             $table->dateTime('fecha_devolucion');
             $table->foreignId('personal_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('equipo_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->boolean('estado');
+            $table->boolean('active');
             $table->timestamps();
         });
     }

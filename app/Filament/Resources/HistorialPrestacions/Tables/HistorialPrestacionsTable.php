@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Financiamientos\Tables;
+namespace App\Filament\Resources\HistorialPrestacions\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -10,29 +10,32 @@ use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class FinanciamientosTable
+class HistorialPrestacionsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('nombre')
-                    ->searchable(),
-                TextColumn::make('type')
-                    ->searchable(),
-                TextColumn::make('monto')
+                TextColumn::make('fecha_prestacion')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('fecha_devolucion')
+                    ->dateTime()
+                    ->sortable(),
+                TextColumn::make('personal_id')
                     ->numeric()
                     ->sortable(),
-                IconColumn::make('active')
+                TextColumn::make('cargo_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('sala_id')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('equipo_id')
+                    ->numeric()
+                    ->sortable(),
+                IconColumn::make('estado')
                     ->boolean(),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

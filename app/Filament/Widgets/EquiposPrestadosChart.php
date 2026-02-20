@@ -11,7 +11,7 @@ class EquiposPrestadosChart extends ChartWidget
 
     protected function getData(): array
     {
-        $prestados = Equipo::where('estado', true)->count();
+        $prestados = Equipo::where('active', true)->count();
 
         return [
             //

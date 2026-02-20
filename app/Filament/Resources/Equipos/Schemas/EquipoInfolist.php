@@ -26,7 +26,10 @@ class EquipoInfolist
                     ->numeric(),
                 TextEntry::make('personal_id')
                     ->numeric(),
-                IconEntry::make('estado')
+
+                TextEntry::make('financiamiento_id')
+                    ->numeric(),
+                IconEntry::make('active')
                     ->boolean(),
                 TextEntry::make('created_at')
                     ->dateTime(),

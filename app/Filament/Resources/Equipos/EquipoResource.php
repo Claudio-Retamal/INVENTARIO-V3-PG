@@ -9,12 +9,16 @@ use App\Filament\Resources\Equipos\Pages\ViewEquipo;
 use App\Filament\Resources\Equipos\Schemas\EquipoForm;
 use App\Filament\Resources\Equipos\Schemas\EquipoInfolist;
 use App\Filament\Resources\Equipos\Tables\EquiposTable;
+
+
 use App\Models\Equipo;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use App\Filament\Imports\EquipoImporter;
+use Filament\Actions\ImportAction;
 
 class EquipoResource extends Resource
 {
@@ -37,6 +41,7 @@ class EquipoResource extends Resource
     public static function table(Table $table): Table
     {
         return EquiposTable::configure($table);
+        
     }
 
     public static function getRelations(): array

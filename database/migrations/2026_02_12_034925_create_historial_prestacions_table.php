@@ -6,17 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-   
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('personals', function (Blueprint $table) {
-            $table->id();
-            $table->string('nombres');
-            $table->string('apellidos');
+        Schema::create('historial_prestacions', function (Blueprint $table) {
+            $table->dateTime('fecha_prestacion');
+            $table->dateTime('fecha_devolucion');
+            $table->foreignId('personal_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('cargo_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sala_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->boolean('active')->default(true);
-            $table->timestamps();
+            $table->foreignId('equipo_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->boolean('active');
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('personals');
+        Schema::dropIfExists('historial_prestacions');
     }
 };

@@ -14,7 +14,7 @@ class CargoInfolist
             ->components([
                 TextEntry::make('nombre'),
                 TextEntry::make('tipo_sala'),
-                IconEntry::make('activo')
+                IconEntry::make('active')
                     ->boolean(),
                 TextEntry::make('created_at')
                     ->dateTime(),

@@ -6,6 +6,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -30,9 +31,7 @@ class PersonalsTable
                     ->sortable()
                     ->searchable(),
 
-                TextColumn::make('estado')
-                    ->numeric()
-                    ->sortable(),
+               IconColumn::make('active')->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

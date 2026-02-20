@@ -20,7 +20,7 @@ class CargosTable
                     ->searchable(),
                 TextColumn::make('tipo_sala')
                     ->searchable(),
-                IconColumn::make('activo')
+                IconColumn::make('active')
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
