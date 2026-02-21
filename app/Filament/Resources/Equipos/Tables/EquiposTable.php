@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Equipos\Tables;
 
+use App\Filament\Exports\EquipoExporter;
 use App\Models\Prestacion;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
@@ -15,6 +16,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use App\Filament\Imports\EquipoImporter;
+use Filament\Actions\ExportAction;
 use Filament\Actions\ImportAction;
 
 class EquiposTable
@@ -152,13 +154,18 @@ class EquiposTable
 
             ->headerActions([
                 ImportAction::make()
-                    ->importer(EquipoImporter::class)
+                    ->importer(EquipoImporter::class),
+
+                ExportAction::make()
+                    ->exporter(EquipoExporter::class)
             ])
 
 
             ->toolbarActions([
 
                 BulkActionGroup::make([
+
+                  
                     DeleteBulkAction::make(),
                 ]),
             ]);
