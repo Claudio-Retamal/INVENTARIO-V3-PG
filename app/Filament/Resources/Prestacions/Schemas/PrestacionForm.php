@@ -18,7 +18,7 @@ class PrestacionForm
         return $schema
             ->components([
 
-                Section::make('Personal')
+                Section::make('Seleccion de personal')
 
                     ->schema([
                         TextInput::make('nombre')
@@ -26,15 +26,19 @@ class PrestacionForm
                         TextInput::make('motivo')
                             ->required(),
 
-                        Select::make('personal_id')->relationship(name: 'personal', titleAttribute: 'nombres')
-                            ->searchable()
+                        Select::make('personal_id')
+                            ->relationship(
+                                name: 'personal',
+                                titleAttribute: 'nombres',
+                                modifyQueryUsing: fn($query) => $query->select(['id', 'nombres', 'apellidos'])
+                            )
+                            ->getOptionLabelFromRecordUsing(fn($record) => "{$record->nombres} {$record->apellidos}")
+                            ->searchable(['nombres', 'apellidos'])
+                            ->optionsLimit(50)
                             ->preload()
-                            ->required(),
-
                     ]),
-                Section::make('Personal')->schema([
 
-
+                Section::make('Seleccion de equipo')->schema([
                     DateTimePicker::make('fecha_prestacion')
                         ->native(false)
                         ->displayFormat('dd/mm/YYYY'),
@@ -43,11 +47,25 @@ class PrestacionForm
                         ->native(false)
                         ->displayFormat('dd/mm/YYYY'),
 
-                    Select::make('equipo_id')->relationship(name: 'equipo', titleAttribute: 'nombre')
+                    Select::make('equipo_id')
+                        ->relationship(
+                            name: 'equipo',
+                            titleAttribute: 'nombre',
+                            modifyQueryUsing: fn($query) => $query->select(['id', 'nombre', 'numero_serial', 'marca', 'modelo'])->where('active', 1)
+                        )
+                        ->getOptionLabelFromRecordUsing(fn($record) => "{$record->marca} - {$record->nombre} - {$record->modelo} - {$record->numero_serial} - {$record->active}")
+                        ->searchable(['nombre', 'numero_serial', 'marca', 'modelo'])
+                        ->optionsLimit(50)
+                        ->preload(),
+
+
+
+                    Toggle::make('active')
+                        ->required(),
+
+                    Select::make('sala_id')->relationship(name: 'sala', titleAttribute: 'nombre')
                         ->searchable()
                         ->preload()
-                        ->required(),
-                    Toggle::make('active')
                         ->required(),
 
                 ])

@@ -33,5 +33,10 @@ class Personal extends Model
     {
         return $this->belongsTo(Cargo::class); // La clave foránea en la tabla 'personal' es 'sala_id'
     }
+
+    public function getNombreCompletoAttribute()
+{
+    return $this->nombres . ' ' . $this->apellidos;
+}
     
 }

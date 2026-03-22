@@ -29,7 +29,20 @@ class PrestacionsTable
                 TextColumn::make('personal.nombres')
                     ->numeric()
                     ->sortable(),
+
+                    TextColumn::make('personal.apellidos')
+                    ->numeric()
+                    ->sortable(),
+
                 TextColumn::make('equipo.nombre')
+                    ->numeric()
+                    ->sortable(),
+
+                TextColumn::make('equipo.modelo')
+                    ->numeric()
+                    ->sortable(),
+
+                TextColumn::make('equipo.numero_serial')
                     ->numeric()
                     ->sortable(),
                 IconColumn::make('active')

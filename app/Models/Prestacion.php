@@ -9,7 +9,7 @@ class Prestacion extends Model
 {
 
     use HasFactory;
-    protected $fillable = ['nombre', 'motivo', 'fecha_prestacion', 'fecha_devolucion', 'personal_id', 'equipo_id', 'active'];
+    protected $fillable = ['nombre', 'motivo', 'fecha_prestacion', 'fecha_devolucion', 'personal_id', 'equipo_id','sala_id', 'active'];
 
     public function personal()
     {
@@ -19,5 +19,10 @@ class Prestacion extends Model
     public function equipo()
     {
         return $this->belongsTo(Equipo::class);
+    }
+
+    public function sala()
+    {
+        return $this->belongsTo(Sala::class);
     }
 }

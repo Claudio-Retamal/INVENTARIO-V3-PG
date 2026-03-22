@@ -110,7 +110,7 @@ class EquiposTable
 
                         // 1️⃣ Validar si el equipo ya tiene préstamo en ese rango de fechas
                         $existePrestamo = Prestacion::where('equipo_id', $record->id)
-                            ->where('estado', true) // solo activos
+                            ->where('active', true) // solo activos
                             ->where('fecha_prestacion', '<=', $data['fecha_devolucion'])
                             ->where('fecha_devolucion', '>=', $data['fecha_prestacion'])
                             ->exists();
