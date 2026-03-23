@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('modelo')->nullable();
             $table->foreignId('categoria_fungible_id')->constrained()->cascadeOnDelete();
             $table->string('unidad_medida'); // unidad, caja, ml
+            $table->integer('stock_actual')->default(0);
             $table->integer('stock_minimo')->default(0);
+            $table->boolean('active');
             $table->timestamps();
         });
     }

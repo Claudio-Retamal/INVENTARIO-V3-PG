@@ -15,7 +15,9 @@ class Fungible extends Model
         'modelo',
         'categoria_fungible_id',
         'unidad_medida',
-        'stock_minimo'
+        'Stock_actual',
+        'stock_minimo',
+        'active'
     ];
 
     public function categoria_fungible()

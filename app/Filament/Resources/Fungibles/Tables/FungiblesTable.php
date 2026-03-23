@@ -25,6 +25,13 @@ class FungiblesTable
                     ->label('Fungible Categoria')
                     ->sortable()
                     ->searchable(),
+
+                 TextColumn::make('categoria_fungible.tipo')
+                    ->label('Tipo de fungible')
+                    ->sortable()
+                    ->searchable(),
+
+
                 TextColumn::make('unidad_medida')
                     ->searchable(),
                 TextColumn::make('stock_minimo')
