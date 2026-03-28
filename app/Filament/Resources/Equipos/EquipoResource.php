@@ -26,7 +26,15 @@ class EquipoResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Equipo';
+    protected static ?string $recordTitleAttribute = 'Equipos';
+    
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Inventario';
+    }
+
+
+
 
     public static function form(Schema $schema): Schema
     {
@@ -41,7 +49,6 @@ class EquipoResource extends Resource
     public static function table(Table $table): Table
     {
         return EquiposTable::configure($table);
-        
     }
 
     public static function getRelations(): array

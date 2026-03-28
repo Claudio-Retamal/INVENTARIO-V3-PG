@@ -26,7 +26,10 @@ class CategoriaFungibleResource extends Resource
     protected static ?string $pluralModelLabel = 'Categorias fungibles';
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
-    protected static ?string $navigationLabel = 'Categorias Fungibles';
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Fungibles';
+    }
 
     public static function form(Schema $schema): Schema
     {

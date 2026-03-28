@@ -8,36 +8,49 @@ class Movimiento_Fungible extends Model
 {
     //
 
-     protected $table = 'movimientos_fungibles';
+     protected $table = 'movimiento_fungibles';
 
     protected $fillable = [
         'fungible_id',
-        'sala_id',
         'tipo',
         'cantidad',
+        'stock_anterior',
+        'stock_actual',
         'motivo',
+        'referencia',
         'personal_id',
-        'fecha_movimiento'
+        'sala_id',
+        'fecha_movimiento',
+
     ];
 
     protected $casts = [
-        'fecha_movimiento' => 'datetime',
+        'fecha_movimiento' => 'date',
     ];
 
-    // Relaciones
+    // 🔗 Relaciones
     public function fungible()
     {
-        return $this->belongsTo(Fungible::class);
+        return $this->belongsTo(Fungible::class, 'fungible_id');
     }
 
-    public function bodega()
+    public function personal()
     {
-        return $this->belongsTo(Bodega::class);
+        return $this->belongsTo(Personal::class);
     }
 
-    public function user()
+      public function sala()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Sala::class);
     }
 
+    // 🎨 Para colores en Filament
+    public function getTipoColorAttribute()
+    {
+        return match ($this->tipo) {
+            'entrada' => 'success',
+            'salida' => 'danger',
+            'ajuste' => 'warning',
+        };
+    }
 }

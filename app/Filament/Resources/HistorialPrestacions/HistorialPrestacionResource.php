@@ -22,7 +22,12 @@ class HistorialPrestacionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'HistorialPrestacion';
+    protected static ?string $recordTitleAttribute = 'Historial Prestacion';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Prestaciones de Equipos';
+    }
 
     public static function form(Schema $schema): Schema
     {

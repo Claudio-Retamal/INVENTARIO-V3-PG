@@ -22,7 +22,11 @@ class PrestacionResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Prestacion';
+    protected static ?string $recordTitleAttribute = 'Prestar Equipo';
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Prestaciones de Equipos';
+    }
 
     public static function form(Schema $schema): Schema
     {

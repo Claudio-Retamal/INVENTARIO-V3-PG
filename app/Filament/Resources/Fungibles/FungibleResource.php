@@ -22,7 +22,12 @@ class FungibleResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Fungible';
+    protected static ?string $recordTitleAttribute = 'Ingreso de Fungible';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Fungibles';
+    }
 
     public static function form(Schema $schema): Schema
     {

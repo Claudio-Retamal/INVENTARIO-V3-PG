@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Fungibles\Schemas;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
 class FungibleForm
@@ -39,6 +40,9 @@ class FungibleForm
                     ->required()
                     ->numeric()
                     ->default(0),
+
+                      Toggle::make('active')
+                            ->required(),
             ]);
     }
 }
