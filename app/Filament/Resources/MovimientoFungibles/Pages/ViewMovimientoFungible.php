@@ -3,19 +3,17 @@
 namespace App\Filament\Resources\MovimientoFungibles\Pages;
 
 use App\Filament\Resources\MovimientoFungibles\MovimientoFungibleResource;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\ViewAction;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Actions\EditAction;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditMovimientoFungible extends EditRecord
+class ViewMovimientoFungible extends ViewRecord
 {
     protected static string $resource = MovimientoFungibleResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            ViewAction::make(),
-            DeleteAction::make(),
+            EditAction::make(),
         ];
     }
 }

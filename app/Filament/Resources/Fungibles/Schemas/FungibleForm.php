@@ -23,26 +23,35 @@ class FungibleForm
                     ->default(null),
                 TextInput::make('modelo')
                     ->default(null),
-                 Select::make('categoria_fungible_id')->relationship(name: 'categoria_fungible', titleAttribute: 'nombre')
-                            ->searchable()
-                            ->preload(),
+                Select::make('categoria_fungible_id')->relationship(name: 'categoria_fungible', titleAttribute: 'nombre')
+                    ->searchable()
+                    ->preload(),
 
-                  Select::make('unidad_medida')
-                        ->label('Tipo')
-                        ->options([
-                            'unidad' => 'Unidad',
-                            'caja' => 'Caja',
-                        ])
-                        ->required()
-                        ->native(false),
+                Select::make('unidad_medida')
+                    ->label('Tipo')
+                    ->options([
+                        'unidad' => 'Unidad',
+                        'caja' => 'Caja',
+                    ])
+                    ->required()
+                    ->native(false),
+
+
+                TextInput::make('stock_actual')
+                    ->required()
+                    ->numeric()
+                    ->default(0),
 
                 TextInput::make('stock_minimo')
                     ->required()
                     ->numeric()
                     ->default(0),
 
-                      Toggle::make('active')
-                            ->required(),
+
+
+
+                Toggle::make('active')
+                    ->required(),
             ]);
     }
 }

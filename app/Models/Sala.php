@@ -17,5 +17,11 @@ class Sala extends Model
         'numero_equipos',
         'active'
     ];
+
+
+    public function movimiento_fungible()
+    {
+        return $this->hasMany(Movimiento_fungible::class);
+    }
  
 }

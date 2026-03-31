@@ -15,7 +15,7 @@ class Fungible extends Model
         'modelo',
         'categoria_fungible_id',
         'unidad_medida',
-        'Stock_actual',
+        'stock_actual',
         'stock_minimo',
         'active'
     ];
@@ -24,6 +24,12 @@ class Fungible extends Model
     {
         return $this->belongsTo(Categoria_fungible::class);
     }
+
+   public function movimiento_fungible()
+    {
+        return $this->hasMany(Movimiento_fungible::class);
+    }
+
 /* 
     public function stocks()
     {

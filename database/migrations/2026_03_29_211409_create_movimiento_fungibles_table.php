@@ -13,17 +13,15 @@ return new class extends Migration
     {
         Schema::create('movimiento_fungibles', function (Blueprint $table) {
             $table->id();
-
             $table->enum('tipo', ['entrada', 'salida', 'ajuste']);
             $table->date('fecha');
             $table->foreignId('fungible_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('personal_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('sala_id')->constrained()->cascadeOnDelete();
             $table->integer('cantidad');
-
             // Stock antes y después (MUY importante)
             $table->integer('stock_anterior');
             $table->integer('stock_actual');
-            $table->foreignId('personal_id')->nullable()->constrained()->nullOnDelete();
             $table->string('motivo')->nullable();
             $table->timestamps();
         });
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('movimiento__fungibles');
+        Schema::dropIfExists('movimiento_fungibles');
     }
 };

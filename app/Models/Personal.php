@@ -35,8 +35,13 @@ class Personal extends Model
     }
 
     public function getNombreCompletoAttribute()
-{
-    return $this->nombres . ' ' . $this->apellidos;
-}
-    
+    {
+        return $this->nombres . ' ' . $this->apellidos;
+    }
+
+    public function movimiento_fungible()
+    {
+        return $this->hasMany(Movimiento_fungible::class);
+    }
+
 }

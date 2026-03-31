@@ -26,7 +26,7 @@ class FungiblesTable
                     ->sortable()
                     ->searchable(),
 
-                 TextColumn::make('categoria_fungible.tipo')
+                TextColumn::make('categoria_fungible.tipo')
                     ->label('Tipo de fungible')
                     ->sortable()
                     ->searchable(),
@@ -34,10 +34,16 @@ class FungiblesTable
 
                 TextColumn::make('unidad_medida')
                     ->searchable(),
+
+                TextColumn::make('stock_actual')
+                    ->numeric()
+                    ->sortable(),
+
+
                 TextColumn::make('stock_minimo')
                     ->numeric()
                     ->sortable(),
-              
+
             ])
             ->filters([
                 //

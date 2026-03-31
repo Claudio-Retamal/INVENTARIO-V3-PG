@@ -4,53 +4,42 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Movimiento_Fungible extends Model
+class Movimiento_fungible extends Model
 {
     //
-
-     protected $table = 'movimiento_fungibles';
+    protected $table = 'movimiento_fungibles';
 
     protected $fillable = [
+        'id',
         'fungible_id',
-        'tipo',
         'cantidad',
+        'tipo',
+        'fecha',
+        'personal_id',
+        'sala_id',
         'stock_anterior',
         'stock_actual',
         'motivo',
-        'referencia',
-        'personal_id',
-        'sala_id',
-        'fecha_movimiento',
-
     ];
 
-    protected $casts = [
-        'fecha_movimiento' => 'date',
-    ];
 
-    // 🔗 Relaciones
-    public function fungible()
+      public function fungible()
     {
-        return $this->belongsTo(Fungible::class, 'fungible_id');
+        return $this->belongsTo(Fungible::class);
     }
 
-    public function personal()
+      public function personal()
     {
         return $this->belongsTo(Personal::class);
     }
+
 
       public function sala()
     {
         return $this->belongsTo(Sala::class);
     }
 
-    // 🎨 Para colores en Filament
-    public function getTipoColorAttribute()
-    {
-        return match ($this->tipo) {
-            'entrada' => 'success',
-            'salida' => 'danger',
-            'ajuste' => 'warning',
-        };
-    }
+  
+
+
 }
