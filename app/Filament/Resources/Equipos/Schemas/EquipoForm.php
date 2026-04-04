@@ -20,7 +20,10 @@ class EquipoForm
                     TextInput::make('nombre')
                         ->required(),
                     TextInput::make('numero_serial')
-                        ->required(),
+                        ->unique(ignoreRecord: true)->live()
+                        ->validationMessages([
+                            'unique' => 'Este número de serie ya está registrado.',
+                        ]),
                     TextInput::make('modelo')
                         ->required(),
                     TextInput::make('marca')

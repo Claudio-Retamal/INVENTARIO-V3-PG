@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('equipos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('numero_serial');
+            $table->string('numero_serial')->unique();
             $table->string('modelo');
             $table->string('marca');
             $table->string('color');
