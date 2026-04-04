@@ -92,6 +92,14 @@ class EquiposTable
                             ->preload()
                             ->required(),
 
+
+                        Select::make('sala_id')
+                            ->label('Sala')
+                            ->relationship('Sala', 'nombre')
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+
                         DatePicker::make('fecha_prestacion')
                             ->label('Fecha de préstamo')
                             ->default(now())
@@ -129,6 +137,7 @@ class EquiposTable
                         Prestacion::create([
                             'equipo_id'       => $record->id,
                             'personal_id'     => $data['personal_id'],
+                            'sala_id'     => $data['sala_id'],
                             'nombre'     => $data['nombre'],
                             'motivo'     => $data['motivo'],
                             'fecha_prestacion' => $data['fecha_prestacion'],
@@ -165,7 +174,7 @@ class EquiposTable
 
                 BulkActionGroup::make([
 
-                  
+
                     DeleteBulkAction::make(),
                 ]),
             ]);

@@ -23,5 +23,11 @@ class Sala extends Model
     {
         return $this->hasMany(Movimiento_fungible::class);
     }
+
+
+    public function prestacion()
+    {
+        return $this->hasMany(Prestacion::class);
+    }
  
 }

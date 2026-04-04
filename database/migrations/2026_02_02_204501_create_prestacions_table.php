@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('motivo');
-            $table->dateTime('fecha_prestacion');
-            $table->dateTime('fecha_devolucion');
+            $table->date('fecha_prestacion');
+            $table->date('fecha_devolucion');
             $table->foreignId('personal_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('equipo_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sala_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+           $table->string('observacion')->nullable();
             $table->boolean('active');
             $table->timestamps();
         });

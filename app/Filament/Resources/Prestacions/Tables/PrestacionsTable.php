@@ -30,27 +30,28 @@ class PrestacionsTable
                     ->numeric()
                     ->sortable(),
 
-                    TextColumn::make('personal.apellidos')
-                    ->numeric()
-                    ->sortable(),
-
                 TextColumn::make('equipo.nombre')
                     ->numeric()
                     ->sortable(),
 
-                TextColumn::make('equipo.modelo')
+                TextColumn::make('equipo.numero_serial')
+                    ->label('Numero de serie')
                     ->numeric()
                     ->sortable(),
 
-                TextColumn::make('equipo.numero_serial')
+                TextColumn::make('sala.nombre')
                     ->numeric()
                     ->sortable(),
-                IconColumn::make('active')
+
+                IconColumn::make('active')->label('Prestado')->boolean()
+
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
+                //------
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
