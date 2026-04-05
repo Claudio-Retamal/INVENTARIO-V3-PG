@@ -25,4 +25,6 @@ class Prestacion extends Model
     {
         return $this->belongsTo(Sala::class);
     }
+
+    
 }

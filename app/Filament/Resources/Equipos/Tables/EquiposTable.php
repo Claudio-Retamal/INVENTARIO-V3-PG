@@ -50,11 +50,11 @@ class EquiposTable
                     ->numeric()
                     ->sortable(),
                 ToggleColumn::make('active')
-                    ->label('Prestado')
-                    ->onColor('danger')
-                    ->offColor('success')
-                    ->onIcon('heroicon-o-lock-closed')
-                    ->offIcon('heroicon-o-lock-open'),
+                    ->label('estado')
+                    ->onColor('success')
+                    ->offColor('danger')
+                    ->onIcon('heroicon-o-arrow-up')
+                    ->offIcon('heroicon-o-arrow-down'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -67,10 +67,40 @@ class EquiposTable
             ->filters([])
             ->recordActions([
                 Action::make('prestar')
-                    ->label('Prestar')
+                    ->label(function ($record) {
+                        return Prestacion::where('equipo_id', $record->id)
+                            ->where('active', true)
+                            ->exists()
+                            ? 'Reservado'
+                            : 'Prestar';
+                    })
+
                     ->icon('heroicon-o-clipboard-document-check')
-                    ->color('success')
-                    ->visible(fn($record) => $record->estado == false)
+
+                    ->color(function ($record) {
+                        return Prestacion::where('equipo_id', $record->id)
+                            ->where('active', true)
+                            ->exists()
+                            ? 'danger'
+                            : 'success';
+                    })
+
+                    // 🔒 DESHABILITAR SI ESTÁ PRESTADO
+                    ->disabled(function ($record) {
+                        return Prestacion::where('equipo_id', $record->id)
+                            ->where('active', true)
+                            ->exists();
+                    })
+
+                    // 💬 TOOLTIP
+                    ->tooltip(function ($record) {
+                        return Prestacion::where('equipo_id', $record->id)
+                            ->where('active', true)
+                            ->exists()
+                            ? 'Este equipo ya está prestado'
+                            : 'Disponible para préstamo';
+                    })
+
                     ->modalHeading('Prestación de equipo')
                     ->form([
 
@@ -84,14 +114,12 @@ class EquiposTable
                             ->required()
                             ->maxLength(255),
 
-
                         Select::make('personal_id')
                             ->label('Personal')
                             ->relationship('personal', 'nombres')
                             ->searchable()
                             ->preload()
                             ->required(),
-
 
                         Select::make('sala_id')
                             ->label('Sala')
@@ -106,6 +134,7 @@ class EquiposTable
                             ->required(),
 
                         DatePicker::make('fecha_devolucion')
+                            ->afterOrEqual('fecha_prestacion')
                             ->label('Fecha de devolución')
                             ->required()
                             ->after('fecha_prestacion'),
@@ -116,9 +145,8 @@ class EquiposTable
                     ])
                     ->action(function (array $data, $record) {
 
-                        // 1️⃣ Validar si el equipo ya tiene préstamo en ese rango de fechas
                         $existePrestamo = Prestacion::where('equipo_id', $record->id)
-                            ->where('active', true) // solo activos
+                            ->where('active', true)
                             ->where('fecha_prestacion', '<=', $data['fecha_devolucion'])
                             ->where('fecha_devolucion', '>=', $data['fecha_prestacion'])
                             ->exists();
@@ -130,33 +158,32 @@ class EquiposTable
                                 ->danger()
                                 ->send();
 
-                            return; // detiene la acción
+                            return;
                         }
 
-                        // 2️⃣ Crear la prestación
                         Prestacion::create([
-                            'equipo_id'       => $record->id,
-                            'personal_id'     => $data['personal_id'],
-                            'sala_id'     => $data['sala_id'],
-                            'nombre'     => $data['nombre'],
-                            'motivo'     => $data['motivo'],
+                            'equipo_id'        => $record->id,
+                            'personal_id'      => $data['personal_id'],
+                            'sala_id'          => $data['sala_id'],
+                            'nombre'           => $data['nombre'],
+                            'motivo'           => $data['motivo'],
                             'fecha_prestacion' => $data['fecha_prestacion'],
                             'fecha_devolucion' => $data['fecha_devolucion'],
-                            'observacion'   => $data['observacion'] ?? null,
-                            'active'          => true, // activo
+                            'observacion'      => $data['observacion'] ?? null,
+                            'active'           => true,
                         ]);
 
-                        // 3️⃣ Marcar equipo como prestado
                         $record->update([
                             'active' => true,
                         ]);
 
-                        // 4️⃣ Notificación de éxito
                         Notification::make()
                             ->title('Préstamo registrado correctamente')
                             ->success()
                             ->send();
                     })
+
+
 
 
             ])

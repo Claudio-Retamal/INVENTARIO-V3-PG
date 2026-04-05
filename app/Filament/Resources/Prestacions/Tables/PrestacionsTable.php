@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 class PrestacionsTable
@@ -21,10 +22,10 @@ class PrestacionsTable
                 TextColumn::make('motivo')
                     ->searchable(),
                 TextColumn::make('fecha_prestacion')
-                    ->dateTime()
+                    ->date('M j, Y')
                     ->sortable(),
                 TextColumn::make('fecha_devolucion')
-                    ->dateTime()
+                    ->date('M j, Y')
                     ->sortable(),
                 TextColumn::make('personal.nombres')
                     ->numeric()
@@ -43,9 +44,31 @@ class PrestacionsTable
                     ->numeric()
                     ->sortable(),
 
-                IconColumn::make('active')->label('Prestado')->boolean()
+                ToggleColumn::make('active')
+                    ->label('Prestado')
+                    ->onColor('danger')   // cuando está prestado
+                    ->offColor('success') // cuando está devuelto
+                    ->onIcon('heroicon-o-lock-closed')
+                    ->offIcon('heroicon-o-lock-open')
+                    ->afterStateUpdated(function ($record, $state) {
 
-                    ->boolean(),
+                        // Si se marca como devuelto (false)
+                        if (!$state) {
+                            // liberar el equipo
+                            $record->equipo->update([
+                                'active' => false,
+                            ]);
+                        }
+
+                        // Si vuelve a prestarse (true)
+                        if ($state) {
+                            $record->equipo->update([
+                                'active' => true,
+                            ]);
+                        }
+                    }),
+
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

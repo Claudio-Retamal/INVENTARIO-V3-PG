@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('personal_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('equipo_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sala_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-           $table->string('observacion')->nullable();
+            $table->string('observacion')->nullable();
             $table->boolean('active');
             $table->timestamps();
         });
