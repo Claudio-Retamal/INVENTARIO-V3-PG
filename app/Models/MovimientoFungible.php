@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Movimiento_fungible extends Model
+class MovimientoFungible extends Model
 {
     //
     protected $table = 'movimiento_fungibles';
@@ -23,23 +23,18 @@ class Movimiento_fungible extends Model
     ];
 
 
-      public function fungible()
+    public function fungible()
     {
         return $this->belongsTo(Fungible::class);
     }
 
-      public function personal()
+    public function personal()
     {
         return $this->belongsTo(Personal::class);
     }
 
-
-      public function sala()
+    public function sala()
     {
         return $this->belongsTo(Sala::class);
     }
-
-  
-
-
 }

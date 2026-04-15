@@ -2,13 +2,15 @@
 
 namespace App\Filament\Resources\MovimientoFungibles\Tables;
 
+use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Tables\Columns\BadgeColumn;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\DB;
 
 class MovimientoFungiblesTable
 {
@@ -16,45 +18,47 @@ class MovimientoFungiblesTable
     {
         return $table
             ->columns([
-
+                TextColumn::make('tipo'),
+                TextColumn::make('fecha')
+                    ->date()
+                    ->sortable(),
                 TextColumn::make('fungible.nombre')
                     ->label('Fungible')
-                    ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
 
                 TextColumn::make('cantidad')
-                    ->label('Cantidad')
-                    ->sortable(),
-
-                BadgeColumn::make('tipo')
-                    ->label('Tipo')
-                    ->colors([
-                        'success' => 'entrada',
-                        'danger' => 'salida',
-                    ])
-                    ->formatStateUsing(fn($state) => ucfirst($state)),
-
-                TextColumn::make('fecha')
-                    ->dateTime('d-m-Y H:i')
-                    ->sortable(),
+                    ->numeric()
+                    ->sortable()
+                    ->label('Cantidad'),
 
                 TextColumn::make('personal.nombres')
-                    ->label('Responsable')
+                    ->label('Personal solicitante')
+                    ->sortable()
                     ->searchable(),
 
                 TextColumn::make('sala.nombre')
-                    ->label('Sala')
+                    ->label('Sala de uso')
+                    ->sortable()
                     ->searchable(),
 
+
                 TextColumn::make('stock_anterior')
-                    ->label('Stock Antes'),
-
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('stock_actual')
-                    ->label('Stock Después'),
-
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('motivo')
-                    ->limit(30)
-                    ->tooltip(fn($record) => $record->motivo),
+                    ->searchable(),
+                TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -64,9 +68,62 @@ class MovimientoFungiblesTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+
+                BulkAction::make('eliminar_y_revertir_stock')
+                    ->label('Eliminar y revertir stock')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->action(function ($records) {
+
+                        DB::transaction(function () use ($records) {
+
+                            foreach ($records as $movimiento) {
+
+                                $fungible = \App\Models\Fungible::lockForUpdate()
+                                    ->find($movimiento->fungible_id);
+
+                                if (!$fungible) {
+                                    continue;
+                                }
+
+                                $stockActual = $fungible->stock;
+
+                                // 🔄 REVERSAR MOVIMIENTO
+                                switch ($movimiento->tipo) {
+
+                                    case 'entrada':
+                                        $nuevoStock = $stockActual - $movimiento->cantidad;
+                                        break;
+
+                                    case 'salida':
+                                        $nuevoStock = $stockActual + $movimiento->cantidad;
+                                        break;
+
+                                    case 'ajuste':
+                                        $nuevoStock = $movimiento->stock_anterior;
+                                        break;
+
+                                    default:
+                                        continue 2;
+                                }
+
+                                // 🔥 ACTUALIZAR STOCK
+                                $fungible->update([
+                                    'stock_actual' => $nuevoStock,
+                                ]);
+
+                                // 🗑 ELIMINAR MOVIMIENTO
+                                $movimiento->delete();
+                            }
+                        });
+
+                        Notification::make()
+                            ->title('Movimientos eliminados')
+                            ->body('El stock fue revertido correctamente')
+                            ->success()
+                            ->send();
+                    }),
             ]);
     }
 }

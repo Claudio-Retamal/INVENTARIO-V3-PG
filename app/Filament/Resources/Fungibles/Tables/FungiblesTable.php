@@ -36,6 +36,8 @@ class FungiblesTable
                     ->searchable(),
 
                 TextColumn::make('stock_actual')
+                                    ->label('Stock inicial')
+
                     ->numeric()
                     ->sortable(),
 

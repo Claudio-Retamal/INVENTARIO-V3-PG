@@ -11,6 +11,8 @@ class Sala extends Model
     //
      use HasFactory;
 
+       protected $table = 'salas';
+
     protected $fillable = [
         'nombre',
         'tipo_sala',
@@ -21,7 +23,7 @@ class Sala extends Model
 
     public function movimiento_fungible()
     {
-        return $this->hasMany(Movimiento_fungible::class);
+        return $this->hasMany(MovimientoFungible::class);
     }
 
 

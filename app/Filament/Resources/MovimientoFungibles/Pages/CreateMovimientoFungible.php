@@ -3,48 +3,84 @@
 namespace App\Filament\Resources\MovimientoFungibles\Pages;
 
 use App\Filament\Resources\MovimientoFungibles\MovimientoFungibleResource;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Support\Facades\DB;
 
 class CreateMovimientoFungible extends CreateRecord
 {
     protected static string $resource = MovimientoFungibleResource::class;
+
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $fungible = \App\Models\Fungible::find($data['fungible_id']);
+        return DB::transaction(function () use ($data) {
 
-        if (!$fungible) {
-            throw new \Exception('Fungible no encontrado');
-        }
+            // 🔒 Obtener fungible con bloqueo
+            $fungible = \App\Models\Fungible::lockForUpdate()->find($data['fungible_id']);
 
-        $stockAnterior = (int) ($fungible->stock_actual ?? 0);
+            if (!$fungible) {
+                throw new \Exception('Fungible no encontrado');
+            }
 
-        // 🚨 VALIDACIÓN REAL
-        if ($data['tipo'] === 'salida' && $data['cantidad'] > $stockAnterior) {
-            throw new \Exception('Stock insuficiente');
-        }
+            // 📦 STOCK ACTUAL
+            $stockAnterior = (int) $fungible->stock_actual;
 
-        $stockActual = $data['tipo'] === 'entrada'
-            ? $stockAnterior + $data['cantidad']
-            : $stockAnterior - $data['cantidad'];
+            // 🔄 CALCULAR NUEVO STOCK
+            if ($data['tipo'] === 'entrada') {
 
-        // Guardar en el movimiento
-        $data['stock_anterior'] = $stockAnterior;
-        $data['stock_actual'] = $stockActual;
+                $stockActual = $stockAnterior + (int)$data['cantidad'];
+            } elseif ($data['tipo'] === 'salida') {
 
-        // ⚠️ ALERTA (opcional)
-        if ($stockActual <= $fungible->stock_minimo) {
-            \Filament\Notifications\Notification::make()
-                ->title('Stock bajo')
-                ->warning()
-                ->body('El stock está por debajo del mínimo')
-                ->send();
-        }
+                if ($stockAnterior < $data['cantidad']) {
 
-        // 🔥 ACTUALIZAR STOCK REAL
-        $fungible->update([
-            'stock' => $stockActual
-        ]);
+                    Notification::make()
+                        ->title('Stock agotado')
+                        ->body("⚠️ '{$fungible->nombre}' ya no tiene stock disponible")
+                        ->danger()
+                        ->icon('heroicon-o-exclamation-triangle')
+                        ->persistent()
+                        ->send();
+                }
 
-        return $data;
+                $stockActual = $stockAnterior - (int)$data['cantidad'];
+            } elseif ($data['tipo'] === 'ajuste') {
+
+                $stockActual = (int)$data['cantidad'];
+            } else {
+                throw new \Exception('Tipo inválido');
+            }
+
+            // 🔥 ACTUALIZAR STOCK EN TABLA FUNGIBLES (CLAVE)
+            $fungible->stock_actual = $stockActual;
+            $fungible->save();
+
+
+
+            // 🔥 GUARDAR EN MOVIMIENTO
+            $data['stock_anterior'] = $stockAnterior;
+            $data['stock_actual'] = $stockActual;
+
+            if ($fungible->stock_actual <= 0) {
+
+                Notification::make()
+                    ->title('Stock agotado')
+                    ->body("⚠️ '{$fungible->nombre}' ya no tiene stock disponible")
+                    ->danger()
+                    ->icon('heroicon-o-exclamation-triangle')
+                    ->persistent()
+                    ->send();
+            } else {
+                Notification::make()
+                    ->title('existencias actualizadas')
+                    ->body(" '{$fungible->stock_actual}' disponible")
+                    ->danger()
+                    ->icon('heroicon-o-arrow-up-green')
+                    ->persistent()
+                    ->send();
+            }
+
+            return $data;
+        });
     }
 }

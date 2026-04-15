@@ -8,6 +8,8 @@ class Fungible extends Model
 {
     //
 
+    protected $table = 'fungibles';
+
     protected $fillable = [
         'nombre',
         'descripcion',
@@ -27,7 +29,7 @@ class Fungible extends Model
 
    public function movimiento_fungible()
     {
-        return $this->hasMany(Movimiento_fungible::class);
+        return $this->hasMany(MovimientoFungible::class);
     }
 
 /* 

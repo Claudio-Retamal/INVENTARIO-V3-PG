@@ -9,8 +9,7 @@ use App\Filament\Resources\MovimientoFungibles\Pages\ViewMovimientoFungible;
 use App\Filament\Resources\MovimientoFungibles\Schemas\MovimientoFungibleForm;
 use App\Filament\Resources\MovimientoFungibles\Schemas\MovimientoFungibleInfolist;
 use App\Filament\Resources\MovimientoFungibles\Tables\MovimientoFungiblesTable;
-use App\Models\Movimiento_fungible;
-
+use App\Models\MovimientoFungible;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -19,11 +18,11 @@ use Filament\Tables\Table;
 
 class MovimientoFungibleResource extends Resource
 {
-    protected static ?string $model = Movimiento_fungible::class;
+    protected static ?string $model = MovimientoFungible::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'Movimiento fungible';
+    protected static ?string $recordTitleAttribute = 'MovimientoFungible';
 
     public static function form(Schema $schema): Schema
     {
@@ -56,6 +55,4 @@ class MovimientoFungibleResource extends Resource
             'edit' => EditMovimientoFungible::route('/{record}/edit'),
         ];
     }
-
-   
 }
