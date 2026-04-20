@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Personal extends Model
 {
 
-  protected $table = 'personals';
+    protected $table = 'personals';
 
     use HasFactory;
     protected $fillable = ['nombres', 'apellidos', 'cargo_id', 'sala_id', 'active'];
@@ -46,4 +46,8 @@ class Personal extends Model
         return $this->hasMany(MovimientoFungible::class);
     }
 
+    public function recambioTintas()
+    {
+        return $this->hasMany(RecambioTinta::class);
+    }
 }

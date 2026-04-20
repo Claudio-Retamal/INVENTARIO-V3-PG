@@ -27,12 +27,22 @@ class Fungible extends Model
         return $this->belongsTo(Categoria_fungible::class);
     }
 
-   public function movimiento_fungible()
+    public function movimiento_fungible()
     {
         return $this->hasMany(MovimientoFungible::class);
     }
 
-/* 
+    public function recambioTintas()
+    {
+        return $this->hasMany(RecambioTinta::class);
+    }
+
+      public function detalles_recambio_tinta()
+    {
+        return $this->hasMany(DetalleRecambioTinta::class);
+    }
+
+    /* 
     public function stocks()
     {
         return $this->hasMany(Stock_Fungible::class);

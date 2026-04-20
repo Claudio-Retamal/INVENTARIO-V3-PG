@@ -75,9 +75,10 @@ class CreateMovimientoFungible extends CreateRecord
                     ->title('existencias actualizadas')
                     ->body(" '{$fungible->stock_actual}' disponible")
                     ->danger()
-                    ->icon('heroicon-o-arrow-up-green')
+                    ->icon('heroicon-o-arrow')
                     ->persistent()
                     ->send();
+                         
             }
 
             return $data;

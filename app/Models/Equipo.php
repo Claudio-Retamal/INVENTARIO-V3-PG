@@ -36,13 +36,18 @@ class Equipo extends Model
         return $this->belongsTo(Personal::class); // La clave foránea en la tabla 'personal' es 'sala_id'
     }
 
-      public function financiamiento()
+    public function financiamiento()
     {
         return $this->belongsTo(Financiamiento::class); //clave foránea en la tabla 'personal' es 'sala_id'
     }
 
     public function prestacion()
-{
-    return $this->hasMany(Prestacion::class);
-}
+    {
+        return $this->hasMany(Prestacion::class);
+    }
+
+    public function recambioTintas()
+    {
+        return $this->hasMany(RecambioTinta::class);
+    }
 }
