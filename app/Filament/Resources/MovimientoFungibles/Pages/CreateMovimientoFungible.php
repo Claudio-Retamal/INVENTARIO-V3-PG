@@ -32,7 +32,14 @@ class CreateMovimientoFungible extends CreateRecord
                 $stockActual = $stockAnterior + (int)$data['cantidad'];
             } elseif ($data['tipo'] === 'salida') {
 
-                if ($stockAnterior < $data['cantidad']) {
+            
+
+                if ($stockAnterior >= $data['cantidad']) {
+
+                $stockActual = $stockAnterior - (int)$data['cantidad'];
+
+                } else {    
+
 
                     Notification::make()
                         ->title('Stock agotado')
@@ -43,7 +50,6 @@ class CreateMovimientoFungible extends CreateRecord
                         ->send();
                 }
 
-                $stockActual = $stockAnterior - (int)$data['cantidad'];
             } elseif ($data['tipo'] === 'ajuste') {
 
                 $stockActual = (int)$data['cantidad'];
@@ -52,14 +58,14 @@ class CreateMovimientoFungible extends CreateRecord
             }
 
             // 🔥 ACTUALIZAR STOCK EN TABLA FUNGIBLES (CLAVE)
-            $fungible->stock_actual = $stockActual;
+            $fungible->stock_actual = $stockAnterior;
             $fungible->save();
 
 
 
             // 🔥 GUARDAR EN MOVIMIENTO
             $data['stock_anterior'] = $stockAnterior;
-            $data['stock_actual'] = $stockActual;
+            $data['stock_actual'] = $stockAnterior;
 
             if ($fungible->stock_actual <= 0) {
 
@@ -75,10 +81,9 @@ class CreateMovimientoFungible extends CreateRecord
                     ->title('existencias actualizadas')
                     ->body(" '{$fungible->stock_actual}' disponible")
                     ->danger()
-                    ->icon('heroicon-o-arrow')
+                    ->icon('heroicon-s-arrow-right-circle')
                     ->persistent()
                     ->send();
-                         
             }
 
             return $data;
