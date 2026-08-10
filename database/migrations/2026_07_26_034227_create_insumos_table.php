@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('failed_import_rows', function (Blueprint $table): void {
+        Schema::create('insumos', function (Blueprint $table) {
             $table->id();
-            $table->json('data');
-            $table->text('validation_error')->nullable();
+            $table->string('nombre');
+            $table->string('marca');
+            $table->unsignedBigInteger('tipo_insumos_id');
+            $table->foreign('tipo_insumos_id')->references('id')->on('tipo_insumos')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('failed_import_rows');
+        Schema::dropIfExists('insumos');
     }
 };

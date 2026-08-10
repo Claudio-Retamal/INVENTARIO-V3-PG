@@ -25,29 +25,4 @@ class Personal extends Model
         return $this->hasMany(Cargo::class); // La clave foránea en la tabla 'personal' es 'sala_id'
     } */
 
-    public function sala()
-    {
-        return $this->belongsTo(Sala::class);
-    }
-
-
-    public function cargo()
-    {
-        return $this->belongsTo(Cargo::class); // La clave foránea en la tabla 'personal' es 'sala_id'
-    }
-
-    public function getNombreCompletoAttribute()
-    {
-        return $this->nombres . ' ' . $this->apellidos;
-    }
-
-    public function movimiento_fungible()
-    {
-        return $this->hasMany(MovimientoFungible::class);
-    }
-
-    public function recambioTintas()
-    {
-        return $this->hasMany(RecambioTinta::class);
-    }
 }
